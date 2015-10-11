@@ -1,5 +1,4 @@
-# Heath Sias (23808695)
-# ICS 32 -> Lab 5
+# Heath Sias
 
 # Othello w/GUI (play_othello.py)
 
@@ -18,31 +17,31 @@ class OthelloApplication:
         '''
         self.game_state = None
         self.game_grid = []
-        
+
         self.root_window = tkinter.Tk()
         self.root_window.title('Othello v.0.5 by Heath Sias')
         self.root_window.resizable(width = False, height = False)
 
-        self.num_rows = 1        
+        self.num_rows = 1
         self.num_cols = 1
 
         self.player_one = 'player_one'
         self.player_two = 'player_two'
         self.nw_corner = 'nw_corner'
         self.criteria = 'criteria'
-        
+
         self.player_one_string = tkinter.StringVar()
         self.player_one_string.set('P1:')
 
         self.player_one_score = tkinter.StringVar()
         self.player_one_score.set('0')
-        
+
         self.player_two_string = tkinter.StringVar()
         self.player_two_string.set('P2:')
 
         self.player_two_score = tkinter.StringVar()
         self.player_two_score.set('0')
-               
+
         self.criteria_string = tkinter.StringVar()
         self.criteria_string.set('v.0.5')
 
@@ -55,7 +54,7 @@ class OthelloApplication:
             background = '#008000',
             borderwidth = -3,
             relief = 'flat')
-       
+
         self.status_frame = tkinter.Frame(
             master = self.root_window,
             width = 200, height = 600)
@@ -64,13 +63,13 @@ class OthelloApplication:
             master = self.root_window,
             width = 200, height = 600)
 
-        TITLE = ['O','T','H','E','L','L','O']        
+        TITLE = ['O','T','H','E','L','L','O']
         for number in range(1, 8):
             title_letter = tkinter.Label(
                 master = self.title_frame,
                 text = '{}'.format(TITLE[number-1]),
                 font = ('Helvetica', 24),
-                borderwidth = 0)            
+                borderwidth = 0)
             title_letter.grid(
                 row = number - 1, column = 0, padx = 0, pady = 0,
                 sticky = tkinter.E + tkinter.W)
@@ -111,15 +110,15 @@ class OthelloApplication:
 
 
         ## layout
-        
+
         self.title_frame.grid(
             row = 0, column = 0, padx = (30,20), pady = 0,
             sticky = tkinter.N + tkinter.S + tkinter.E + tkinter.W)
-        
+
         self.canvas.grid(
             row = 0, column = 1, padx = 10, pady = 0,
             sticky = tkinter.N + tkinter.S + tkinter.E + tkinter.W)
-        
+
         self.status_frame.grid(
             row = 0, column = 2, padx = (0,10), pady = 0,
             sticky = tkinter.N + tkinter.S + tkinter.E + tkinter.W)
@@ -127,7 +126,7 @@ class OthelloApplication:
         self.player1_label.grid(
             row = 0, column = 0, padx = 10, pady = 10,
             sticky = tkinter.N + tkinter.S + tkinter.E)
-        
+
         self.player1_score_label.grid(
             row = 0, column = 1, padx = 0, pady = 10,
             sticky = tkinter.N + tkinter.S + tkinter.W)
@@ -150,11 +149,11 @@ class OthelloApplication:
 
 
         ## behavior
-            
+
 #        self.root_window.minsize(width = 330, height = 300)
 
         self.root_window.rowconfigure(0, weight = 1)
-        
+
         self.root_window.columnconfigure(0, weight = 0)
         self.root_window.columnconfigure(1, weight = 3)
         self.root_window.columnconfigure(2, weight = 0)
@@ -166,11 +165,11 @@ class OthelloApplication:
         self.status_frame.rowconfigure(0, weight = 1)
         self.status_frame.rowconfigure(1, weight = 1)
         self.status_frame.rowconfigure(2, weight = 1)
-        
+
         self.status_frame.columnconfigure(0, weight = 0)
         self.status_frame.columnconfigure(1, weight = 0)
 
-                
+
     ## public methods
 
     def start(self) -> None:
@@ -191,23 +190,23 @@ class OthelloApplication:
         if dialog.was_ok_clicked():
             self.num_rows = dialog.get_num_rows()
             self.num_cols = dialog.get_num_cols()
-            
+
             self.player_one_string.set('{}:'.format(dialog.get_player_one()))
             self.player_one = dialog.get_player_one()[0]
-            
+
             self.player_two_string.set('{}:'.format(dialog.get_player_two()))
             self.player_two = dialog.get_player_two()[0]
-            
+
             self.nw_corner = dialog.get_nw_corner()
-            
+
             self.criteria_string.set('Win by:\n{}'.format(dialog.get_criteria()))
             self.criteria = dialog.get_criteria()[0]
-            
+
             self.start_button.grid_remove()
 
             self.game_state = othello.OthelloGameState(
                 self.num_rows, self.num_cols, self.player_one, self.nw_corner, self.criteria)
-            
+
             self._start_game()
 
 
@@ -215,7 +214,7 @@ class OthelloApplication:
         '''
         '''
         total_rows_and_columns = self.num_rows + self.num_cols
-        
+
         row_ratio = self.num_rows / total_rows_and_columns
         col_ratio = self.num_cols / total_rows_and_columns
 
@@ -223,10 +222,10 @@ class OthelloApplication:
         game_canvas_height = int(800 * row_ratio)
 
         self.root_window.geometry("{}x{}".format(game_canvas_width, game_canvas_height))
-        
+
         self._draw_game_board()
         self._update_labels()
-        
+
         self.canvas.bind('<Configure>', self._on_canvas_resized)
         self.canvas.bind('<Button-1>', self._on_canvas_clicked)
 
@@ -235,10 +234,10 @@ class OthelloApplication:
         ''' Draw the game grid and pieces
         '''
         self.canvas.delete(tkinter.ALL)
-        
+
         width = self.canvas.winfo_width()
         height = self.canvas.winfo_height()
-        
+
         horizontals = []
         for row_line in range(self.num_rows + 1):
             horizontals.append((row_line/self.num_rows) * height)
@@ -252,8 +251,8 @@ class OthelloApplication:
 
         for x_coordinate in verticals:
             self.canvas.create_line(x_coordinate, 0, x_coordinate, height)
-        
-        for row in range(self.num_rows):           
+
+        for row in range(self.num_rows):
             for col in range(self.num_cols):
                 if self.game_state._game_board[row][col] == othello.BLACK:
                     self.canvas.create_oval(
@@ -270,7 +269,7 @@ class OthelloApplication:
                         ((col+1)/self.num_cols) * width - 3,
                         ((row+1)/self.num_rows) * height - 3,
                         outline = 'black', fill = 'white')
-                
+
 
     def _on_canvas_resized(self, event: tkinter.Event) -> None:
         '''
@@ -293,7 +292,7 @@ class OthelloApplication:
         except:
             pass
 
-    
+
     def _next_turn(self) -> None:
         '''
         '''
@@ -302,26 +301,26 @@ class OthelloApplication:
         if self.game_state.game_over():
             self._show_winner()
             self.start_button.grid()
-  
-            
+
+
     def _update_labels(self) -> None:
         ''' Change player labels to highlight who's turn it is and update scores
         '''
         if self.player_one == othello.WHITE:
             self.player_one_score.set(str(self.game_state.white()))
-            self.player_two_score.set(str(self.game_state.black()))                          
+            self.player_two_score.set(str(self.game_state.black()))
         else:
             self.player_one_score.set(str(self.game_state.black()))
             self.player_two_score.set(str(self.game_state.white()))
-            
-        if self.game_state.current_player() == self.player_one:                           
-            self.player1_label.config(font = ('Helvetica', 18), fg = 'blue')                        
-            self.player2_label.config(font = ('Helvetica', 18), fg = 'black')                        
-        else:
-            self.player2_label.config(font = ('Helvetica', 18), fg = 'blue')                       
-            self.player1_label.config(font = ('Helvetica', 18), fg = 'black')            
 
-            
+        if self.game_state.current_player() == self.player_one:
+            self.player1_label.config(font = ('Helvetica', 18), fg = 'blue')
+            self.player2_label.config(font = ('Helvetica', 18), fg = 'black')
+        else:
+            self.player2_label.config(font = ('Helvetica', 18), fg = 'blue')
+            self.player1_label.config(font = ('Helvetica', 18), fg = 'black')
+
+
     def _show_winner(self) -> None:
         '''
         '''
@@ -342,16 +341,16 @@ class PreferenceDialog:
 
         self.row_choice = tkinter.IntVar()
         self.row_choice.set(1)
-        
+
         self.col_choice = tkinter.IntVar()
         self.col_choice.set(1)
-        
+
         self.player_choice = tkinter.StringVar()
         self.player_choice.set('DPlayer1')
-        
+
         self.corner_choice = tkinter.StringVar()
         self.corner_choice.set('DNWCorner')
-        
+
         self.criteria_choice = tkinter.StringVar()
         self.criteria_choice.set('DCriteria')
 
@@ -360,7 +359,7 @@ class PreferenceDialog:
         self.top_frame = tkinter.Frame(
             master = self.dialog_window,
             width = 200, height = 50)
-        
+
         self.button_frame = tkinter.Frame(
             master = self.dialog_window,
             width = 200, height = 50)
@@ -406,38 +405,38 @@ class PreferenceDialog:
             master = self.top_frame, text = '16',
             variable = self.row_choice, value = 16)
 
-           
+
         col_label = tkinter.Label(
             master = self.top_frame, text = 'Number of columns')
 
         col_radio1 = tkinter.Radiobutton(
             master = self.top_frame, text = '4',
             variable = self.col_choice, value = 4)
-            
+
         col_radio2 = tkinter.Radiobutton(
             master = self.top_frame, text = '6',
             variable = self.col_choice, value = 6)
-            
+
         col_radio3 = tkinter.Radiobutton(
             master = self.top_frame, text = '8',
             variable = self.col_choice, value = 8)
-            
+
         col_radio4 = tkinter.Radiobutton(
             master = self.top_frame, text = '10',
             variable = self.col_choice, value = 10)
-            
+
         col_radio5 = tkinter.Radiobutton(
             master = self.top_frame, text = '12',
             variable = self.col_choice, value = 12)
-            
+
         col_radio6 = tkinter.Radiobutton(
             master = self.top_frame, text = '14',
             variable = self.col_choice, value = 14)
-            
+
         col_radio7 = tkinter.Radiobutton(
             master = self.top_frame, text = '16',
             variable = self.col_choice, value = 16)
-            
+
 
         p1_label = tkinter.Label(
             master = self.dialog_window, text = 'Player to start')
@@ -450,7 +449,7 @@ class PreferenceDialog:
             master = self.dialog_window, text = 'White',
             variable = self.player_choice, value = 'White')
 
-        
+
         nw_label = tkinter.Label(
             master = self.dialog_window, text = 'NW starting square')
 
@@ -462,14 +461,14 @@ class PreferenceDialog:
             master = self.dialog_window, text = 'White',
             variable = self.corner_choice, value = othello.WHITE)
 
-        
+
         crit_label = tkinter.Label(
             master = self.dialog_window, text = 'Win by')
 
         crit_radio1 = tkinter.Radiobutton(
             master = self.dialog_window, text = 'Most Pieces',
             variable = self.criteria_choice, value = 'Most')
-        
+
         crit_radio2 = tkinter.Radiobutton(
             master = self.dialog_window, text = 'Fewest Pieces',
             variable = self.criteria_choice, value = 'Fewest')
@@ -481,7 +480,7 @@ class PreferenceDialog:
         self.top_frame.grid(
             row = 0, column = 0, columnspan = 4, padx = 10, pady = 10,
             sticky = tkinter.N + tkinter.S + tkinter.E + tkinter.W)
-        
+
         row_label.grid(row = 0, column = 0, sticky = 'E', padx = (40,0))
         row_radio1.grid(row = 0, column = 1, sticky = 'W')
         row_radio2.grid(row = 0, column = 2, sticky = 'W')
@@ -490,7 +489,7 @@ class PreferenceDialog:
         row_radio5.grid(row = 0, column = 5, sticky = 'W')
         row_radio6.grid(row = 0, column = 6, sticky = 'W')
         row_radio7.grid(row = 0, column = 7, sticky = 'W')
-        
+
         col_label.grid(row = 1, column = 0, sticky = 'E')
         col_radio1.grid(row = 1, column = 1, sticky = 'W')
         col_radio2.grid(row = 1, column = 2, sticky = 'W')
@@ -539,7 +538,7 @@ class PreferenceDialog:
         return self.num_rows
 
     def get_num_cols(self) -> int:
-        ''' Return number of columns'''        
+        ''' Return number of columns'''
         return self.num_cols
 
     def get_player_one(self) -> str:
@@ -573,7 +572,7 @@ class PreferenceDialog:
            (self.player_choice.get() in ['White','Black']) and\
            (self.corner_choice.get() in ['W','B']) and\
            (self.criteria_choice.get() in ['Most','Fewest']):
-            
+
             self.ok_clicked = True
             self.num_rows = self.row_choice.get()
             self.num_cols = self.col_choice.get()
@@ -581,19 +580,18 @@ class PreferenceDialog:
             self.nw_corner = self.corner_choice.get()
             self.criteria = self.criteria_choice.get()
             self.dialog_window.destroy()
-            
+
         else:
             self._on_cancel_button()
-            
+
 
     def _on_cancel_button(self) -> None:
         self.dialog_window.destroy()
 
 
-        
+
 
 ### DRIVER
-        
+
 if __name__ == '__main__':
     OthelloApplication().start()
-    
