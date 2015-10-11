@@ -1,2 +1,2 @@
 # heathsias.github.io
-My personal GitHub website
+My professional website. http://www.heathsias.me redirects here.
