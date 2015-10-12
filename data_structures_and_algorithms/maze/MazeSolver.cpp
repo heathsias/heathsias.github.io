@@ -1,0 +1,62 @@
+// MazeSolverDepthFirst.cpp
+// Heath Sias
+// ICS 46 S15
+
+#include <vector>
+#include <random>
+#include "MazeSolver.hpp"
+#include "MazeSolution.hpp"
+#include "Maze.hpp"
+
+
+
+//public
+void MazeSolverDepthFirst::solveMaze(const Maze& maze, MazeSolution& mazeSolution)
+{
+	//create and initialize 'visited' vector to all 'false'
+	std::vector<std::vector<bool>> visited(maze.getWidth(), std::vector<bool>(maze.getHeight(),false));
+
+	// reinitialize the mazeSolution
+	mazeSolution.restart();
+
+	// call recursive function which will explore the entire maze until solved
+	exploreTunnel(mazeSolution.getStartingCell(), maze, mazeSolution, visited);
+}
+
+
+
+//private
+void MazeSolverDepthFirst::exploreTunnel(const std::pair<int, int> cell,
+                                         const Maze& maze,
+                                         MazeSolution& mazeSolution,
+                                         std::vector<std::vector<bool>>& visited)
+{
+	visited[cell.first][cell.second] = true;
+
+	// construct a list of available paths
+	std::vector<enum Direction> availableTunnels;
+	if (!maze.wallExists(cell.first, cell.second, Direction::up) && !visited[cell.first][cell.second-1])
+		{availableTunnels.push_back(Direction::up);}
+	if (!maze.wallExists(cell.first, cell.second, Direction::left) && !visited[cell.first-1][cell.second])
+		{availableTunnels.push_back(Direction::left);}
+	if (!maze.wallExists(cell.first, cell.second, Direction::down) && !visited[cell.first][cell.second+1])
+		{availableTunnels.push_back(Direction::down);}
+	if (!maze.wallExists(cell.first, cell.second, Direction::right) && !visited[cell.first+1][cell.second])
+		{availableTunnels.push_back(Direction::right);}
+
+	int tunnelsAvailable = availableTunnels.size();
+	while (tunnelsAvailable && !mazeSolution.isComplete())
+	{
+		enum Direction tunnelToExplore = availableTunnels.back();
+		availableTunnels.pop_back();
+
+		mazeSolution.extend(tunnelToExplore);
+		exploreTunnel(mazeSolution.getCurrentCell(), maze, mazeSolution, visited);
+
+		tunnelsAvailable = availableTunnels.size();
+	}
+	if (mazeSolution.isComplete())
+		return;
+	else
+		mazeSolution.backUp();
+}

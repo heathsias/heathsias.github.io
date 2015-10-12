@@ -1,0 +1,93 @@
+// MazeGenerator.cpp
+// Heath Sias
+// ICS 46 S15
+
+#include <vector>
+#include <random>
+#include "MazeGenerator.hpp"
+#include "MazeException.hpp"
+#include "Maze.hpp"
+
+
+
+namespace
+{
+	const unsigned int startX = 0;
+	const unsigned int startY = 0;
+}
+
+
+
+//public
+void MazeGeneratorDepthFirst::generateMaze(Maze& maze)
+{
+	//create and initialize 'visited' vector to all 'false'
+	std::vector<std::vector<bool>> visited(maze.getWidth(), std::vector<bool>(maze.getHeight(),false));
+
+	//create and seed random number generator
+	std::default_random_engine generator(std::random_device{}());
+	//engine(appliance)
+
+	// initialize maze - add walls around every cell
+	maze.addAllWalls();
+
+	// call recursive function which will dig the entire maze 'tunnel'
+	digTunnel(startX, startY, maze, generator, visited);
+}
+
+
+
+//private
+void MazeGeneratorDepthFirst::digTunnel(unsigned int x,
+                                        unsigned int y,
+                                        Maze& maze,
+                                        std::default_random_engine& generator,
+                                        std::vector<std::vector<bool>>& visited)
+{
+	visited[x][y] = true;
+
+	// construct a list of available walls
+	std::vector<enum Direction> availableWalls;
+	if (x > 0  &&  visited[x-1][y] == false)                  {availableWalls.push_back(Direction::left);}
+	if (x < maze.getWidth()-1  &&  visited[x+1][y] == false)  {availableWalls.push_back(Direction::right);}
+	if (y > 0  &&  visited[x][y-1] == false)                  {availableWalls.push_back(Direction::up);}
+	if (y < maze.getHeight()-1  &&  visited[x][y+1] == false) {availableWalls.push_back(Direction::down);}
+
+	// while walls are available, choose one at random and recurse into it.
+	int wallsAvailable = availableWalls.size();
+	while (wallsAvailable)
+	{
+		enum Direction wallToRemove = availableWalls[std::uniform_int_distribution<int>{0, wallsAvailable-1}(generator)];
+		switch (wallToRemove)
+		{
+		case Direction::left:
+			maze.removeWall(x,y,Direction::left);
+			digTunnel(x-1, y, maze, generator, visited);
+			break;
+		case Direction::right:
+			maze.removeWall(x,y,Direction::right);
+			digTunnel(x+1, y, maze, generator, visited);
+			break;
+		case Direction::up:
+			maze.removeWall(x,y,Direction::up);
+			digTunnel(x, y-1, maze, generator, visited);
+			break;
+		case Direction::down:
+			maze.removeWall(x,y,Direction::down);
+			digTunnel(x, y+1, maze, generator, visited);
+			break;
+		default:
+			throw MazeException::MazeException("Available wall is not an enumerated direction!");
+		}
+
+		// clear available walls and recheck all directions, updating number available
+		availableWalls.clear();
+		if (x > 0  &&  visited[x-1][y] == false)                  {availableWalls.push_back(Direction::left);}
+		if (x < maze.getWidth()-1  &&  visited[x+1][y] == false)  {availableWalls.push_back(Direction::right);}
+		if (y > 0  &&  visited[x][y-1] == false)                  {availableWalls.push_back(Direction::up);}
+		if (y < maze.getHeight()-1  &&  visited[x][y+1] == false) {availableWalls.push_back(Direction::down);}
+		wallsAvailable = availableWalls.size();
+	}
+
+	return;
+}
