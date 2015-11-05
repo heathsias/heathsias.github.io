@@ -1,6 +1,5 @@
 // MazeGenerator.cpp
 // Heath Sias
-// ICS 46 S15
 
 #include <vector>
 #include <random>

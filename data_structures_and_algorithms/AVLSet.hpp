@@ -1,7 +1,6 @@
 // AVLSet.hpp
 //
 // Heath Sias
-// ICS 46 Spring 2015
 
 #ifndef AVLSET_HPP
 #define AVLSET_HPP

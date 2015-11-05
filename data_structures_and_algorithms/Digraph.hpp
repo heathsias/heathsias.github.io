@@ -1,7 +1,6 @@
 // Digraph.hpp
 //
 // Heath Sias
-// ICS 46 Spring 2015
 //
 // Declaration of a Digraph template class, a generic directed graph, using the
 // adjacency lists technique (each vertex stores a linked list of its outgoing edges).

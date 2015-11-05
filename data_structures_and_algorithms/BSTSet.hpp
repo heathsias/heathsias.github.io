@@ -1,7 +1,6 @@
 // BSTSet.hpp
 //
 // Heath Sias
-// ICS 46 Spring 2015
 
 #ifndef BSTSET_HPP
 #define BSTSET_HPP

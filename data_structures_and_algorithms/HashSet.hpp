@@ -1,7 +1,6 @@
 // HashSet.hpp
 //
 // Heath Sias
-// ICS 46 Spring 2015
 
 #ifndef HASHSET_HPP
 #define HASHSET_HPP
