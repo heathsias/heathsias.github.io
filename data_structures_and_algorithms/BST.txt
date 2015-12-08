@@ -1,5 +1,3 @@
-// BSTSet.hpp
-//
 // Heath Sias
 
 #ifndef BSTSET_HPP

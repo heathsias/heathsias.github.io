@@ -1,5 +1,3 @@
-// AVLSet.hpp
-//
 // Heath Sias
 
 #ifndef AVLSET_HPP

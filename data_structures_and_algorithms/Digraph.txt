@@ -1,5 +1,3 @@
-// Digraph.hpp
-//
 // Heath Sias
 //
 // Declaration of a Digraph template class, a generic directed graph, using the

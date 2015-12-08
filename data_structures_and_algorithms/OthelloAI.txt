@@ -1,4 +1,4 @@
-// SiasOthelloAI.cpp
+// Heath Sias
 
 #include "SiasOthelloAI.hpp"
 #include "OthelloException.hpp"

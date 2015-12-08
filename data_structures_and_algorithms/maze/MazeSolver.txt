@@ -1,4 +1,3 @@
-// MazeSolverDepthFirst.cpp
 // Heath Sias
 
 #include <vector>
